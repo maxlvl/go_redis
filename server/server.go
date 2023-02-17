@@ -96,6 +96,7 @@ func oneRequest(connection_fd int) error {
   // extract the 4 byte header and allow for null terminator (hence the +1)
   read_buffer := make([]byte, 4 + MAXSIZEMSG + 1)
   _, err := syscall.Read(connection_fd, read_buffer[:4])
+  fmt.Println("Finished Reading the header, error was %s", err)
   if err != nil {
     return err
   }
@@ -104,6 +105,7 @@ func oneRequest(connection_fd int) error {
   var buf_len uint32
   new_buffer := bytes.NewBuffer(read_buffer[4:])
   err = binary.Read(new_buffer, binary.LittleEndian, &buf_len)
+  fmt.Println("Created new buffer in OneRequest")
   if err != nil {
     return err
   }
@@ -114,6 +116,7 @@ func oneRequest(connection_fd int) error {
 
   // request body
   _, err = syscall.Read(connection_fd, read_buffer[4:4+buf_len])
+  fmt.Println("Read Request Body in OneRequest")
   if err != nil {
     return err
   }
@@ -122,7 +125,7 @@ func oneRequest(connection_fd int) error {
   fmt.Println("client is saying %s\n", read_buffer[4: 4 + buf_len])
 
   // reply from server
-  reply := []byte("World")
+  reply := []byte("World\n")
   write_buffer := make([]byte, 4+len(reply))
 
   buf_len = uint32(len(reply))
