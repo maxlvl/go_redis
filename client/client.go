@@ -17,14 +17,21 @@ func main() {
 	fmt.Println("Connected to server")
 	
 	defer conn.Close()
-	
 	// write data to server
 	fmt.Println("Sending data to server...")
 
-	_, err = conn.Write([]byte("Hello from the client"))
+  send_message("4 this", conn)
+  // send_message("Hello2", conn)
+  // send_message("Hello3", conn)
+
+}
+
+func send_message(msg string, conn net.Conn) error {
+
+  _, err := conn.Write([]byte(msg))
 	if err != nil {
 		fmt.Println(err)
-		return
+		return err
 	}
 	
 	reader := bufio.NewReader(conn)
@@ -34,13 +41,16 @@ func main() {
   if err != nil {
     if err == io.EOF {
       fmt.Println("Connection closed by remote end")
+      return err
     } else {
       fmt.Println("Error reading from connection:", err)
+      return err
     }
-    return
+    return err
   }
 
   response := string(line)
 	
 	fmt.Println(response)
+  return nil
 }
