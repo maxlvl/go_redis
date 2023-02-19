@@ -79,7 +79,7 @@ func oneRequest(connection_fd int) error {
   }
 
   if buf_len > MAXSIZEMSG {
-    fmt.Printf("Error happened - buf len is too long")
+    fmt.Printf("Error happened - buf len is too long at %s\n", buf_len)
     return nil
   }
 

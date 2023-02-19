@@ -20,7 +20,7 @@ func main() {
 	// write data to server
 	fmt.Println("Sending data to server...")
 
-  send_message("4 this", conn)
+  send_message("4", conn)
   // send_message("Hello2", conn)
   // send_message("Hello3", conn)
 
